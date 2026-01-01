@@ -1,0 +1,170 @@
+.hub-real-container {
+    width: 220px;
+    height: 320px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), inset 0 0 5px rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #e0e0e0;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Corner Mounting Holes */
+.hub-hole {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: #f8f8f8;
+    border: 2px solid #eee;
+    border-radius: 50%;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hub-hole.tl {
+    top: 8px;
+    left: 8px;
+}
+
+.hub-hole.tr {
+    top: 8px;
+    right: 8px;
+}
+
+.hub-hole.bl {
+    bottom: 10px;
+    left: 8px;
+}
+
+.hub-hole.br {
+    bottom: 10px;
+    right: 8px;
+}
+
+/* Top Strip (Logo + BT) */
+.hub-top-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.hub-lego-logo {
+    font-weight: 900;
+    font-family: 'Arial Black', sans-serif;
+    font-size: 14px;
+    color: #222;
+    border: 1px solid #ddd;
+    padding: 2px 4px;
+    border-radius: 2px;
+    letter-spacing: -1px;
+}
+
+.hub-bt-btn {
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    border: 2px solid #ffec00;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Matrix with side labels */
+.hub-matrix-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.hub-matrix-labels {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 120px;
+    /* Aligned with matrix rows */
+    padding: 5px 0;
+}
+
+.hub-matrix-label {
+    font-size: 14px;
+    font-weight: 800;
+    color: #cbd5e1;
+    font-family: 'Arial Black', sans-serif;
+}
+
+.hub-display {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    background: #fafafa;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #f0f0f0;
+}
+
+.hub-cell {
+    width: 20px;
+    height: 20px;
+    background: #f0f0f0;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Yellow active state from image */
+.hub-cell.active {
+    background: #ffec00;
+    box-shadow: 0 0 8px rgba(255, 236, 0, 0.6);
+}
+
+/* Bottom Controls */
+.hub-controls-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    gap: 15px;
+    margin-top: auto;
+    margin-bottom: 15px;
+}
+
+.hub-btn.small {
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    border: 2px solid #eee;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 12px;
+}
+
+.hub-btn.circular-led {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: 6px solid #f5f5f5;
+    cursor: pointer;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08), inset 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.hub-btn.circular-led:active {
+    transform: scale(0.96);
+}

@@ -1,0 +1,108 @@
+.mode-logic-panel {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    width: 400px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+    border: 1px solid #eee;
+    border-top-width: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    font-family: 'Inter', sans-serif;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.mode-badge {
+    padding: 4px 12px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.mode-title {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #1e293b;
+}
+
+.logic-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.section-title {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logic-block {
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.logic-block.gray {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+}
+
+.logic-block.yellow {
+    background: #fefce8;
+    border: 1px solid #fef08a;
+    color: #854d0e;
+}
+
+.logic-block.red {
+    background: #fef2f2;
+    border: 1px solid #fee2e2;
+    color: #991b1b;
+}
+
+.logic-block.blue {
+    background: #f0f9ff;
+    border: 1px solid #e0f2fe;
+    color: #0369a1;
+}
+
+.logic-block.empty {
+    color: #cbd5e1;
+    font-style: italic;
+    padding: 5px 0;
+}
+
+.mapping-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.mapping-item b {
+    color: #1e293b;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 0 6px;
+    border-radius: 4px;
+}
+
+.indent {
+    margin-left: 20px;
+    margin-top: 5px;
+}
