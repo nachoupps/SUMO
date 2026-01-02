@@ -1,5 +1,5 @@
 import React from "react";
-import { Parameters } from "./ParameterEditor";
+import type { Parameters } from "./ParameterEditor";
 import "./ScriptExporter.css";
 
 interface ScriptExporterProps {
