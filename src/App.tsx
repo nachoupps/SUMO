@@ -100,7 +100,6 @@ function App() {
           />
           <ScriptExporter
             params={params}
-            currentModeColor={currentModeColor}
           />
         </div>
       </main>

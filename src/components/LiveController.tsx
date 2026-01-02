@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import HubVisualizer from "./HubVisualizer";
 import ScriptExporter from "./ScriptExporter";
-import { Parameters } from "./ParameterEditor";
+import type { Parameters } from "./ParameterEditor";
 import "./LiveController.css";
 
 const LiveController: React.FC = () => {
@@ -10,7 +10,7 @@ const LiveController: React.FC = () => {
     const [currentMode, setCurrentMode] = useState(0);
 
     // Parámetros por defecto
-    const [params, setParams] = useState<Parameters>({
+    const [params] = useState<Parameters>({
         DRIVE_SPEED: 200,
         TURN_RATE: 150,
         ACTION_SPEED: 1000,
@@ -73,7 +73,7 @@ const LiveController: React.FC = () => {
                 </div>
             </div>
 
-            <ScriptExporter params={params} currentModeColor={modeColors[currentMode]} />
+            <ScriptExporter params={params} />
         </div>
     );
 };

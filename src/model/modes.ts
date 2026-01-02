@@ -1,16 +1,20 @@
 // Fixed robot modes matching the Pybricks master script
 
-export enum ModeId {
-    MODE_1 = 0,
-    MODE_2 = 1,
-    MODE_3 = 2,
-}
+export const ModeId = {
+    MODE_1: 0,
+    MODE_2: 1,
+    MODE_3: 2,
+} as const;
 
-export enum ModeColor {
-    GREEN = "GREEN",
-    ORANGE = "ORANGE",
-    MAGENTA = "MAGENTA",
-}
+export type ModeId = (typeof ModeId)[keyof typeof ModeId];
+
+export const ModeColor = {
+    GREEN: "GREEN",
+    ORANGE: "ORANGE",
+    MAGENTA: "MAGENTA",
+} as const;
+
+export type ModeColor = (typeof ModeColor)[keyof typeof ModeColor];
 
 export type ModeDefinition = {
     id: ModeId;

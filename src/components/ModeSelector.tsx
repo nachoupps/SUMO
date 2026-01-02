@@ -1,4 +1,4 @@
-import React from "react";
+import "./ModeSelector.css";
 
 interface Mode {
     name: string;
@@ -13,20 +13,14 @@ interface Props {
 
 export default function ModeSelector({ modes, mode, setMode }: Props) {
     return (
-        <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+        <div className="mode-selector">
             {modes.map((m, i) => (
                 <button
                     key={i}
-                    style={{
-                        backgroundColor: m.color,
-                        color: "white",
-                        padding: "10px 20px",
-                        border: mode === i ? "3px solid black" : "none",
-                        cursor: "pointer",
-                    }}
+                    className={`mode-btn ${m.color} ${mode === i ? "active" : ""}`}
                     onClick={() => setMode(i)}
                 >
-                    {m.name}
+                    {m.name.toUpperCase()}
                 </button>
             ))}
         </div>
