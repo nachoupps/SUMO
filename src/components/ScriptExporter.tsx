@@ -1,4 +1,3 @@
-import React from "react";
 import type { Parameters } from "./ParameterEditor";
 import "./ScriptExporter.css";
 
@@ -10,89 +9,116 @@ const ScriptExporter: React.FC<ScriptExporterProps> = ({ params }) => {
     const generateScript = () => {
         return `from pybricks.hubs import InventorHub
 from pybricks.pupdevices import Motor, UltrasonicSensor, Remote
-from pybricks.parameters import Button, Color, Direction, Port
+from pybricks.parameters import Button, Color, Direction, Port, Stop
 from pybricks.robotics import DriveBase
 from pybricks.tools import wait
 
-# --- Hardware Setup ---
+# --- CONFIGURACIÓN DEL HARDWARE ---
 hub = InventorHub()
+
 left_motor = Motor(Port.F, positive_direction=Direction.COUNTERCLOCKWISE)
 right_motor = Motor(Port.E, positive_direction=Direction.CLOCKWISE)
 drive_base = DriveBase(left_motor, right_motor, wheel_diameter=56, axle_track=80)
-motor_action = Motor(Port.D)
-distance_sensor = UltrasonicSensor(Port.A)
 
-# Ensure connection to Remote
-try:
-    rc = Remote()
-    hub.display.hex('00FF00') # Green if connected
-except:
-    hub.display.hex('FF0000') # Red if error
-    wait(1000)
+motor_pala = Motor(Port.D) 
+distancia = UltrasonicSensor(Port.A)
 
-# --- Parameters ---
+# --- VARIABLES DE CONTROL ---
 DRIVE_SPEED = ${params.DRIVE_SPEED}
 TURN_RATE = ${params.TURN_RATE}
-ACTION_SPEED = ${params.ACTION_SPEED}
-ACTION_ANGLE = ${params.ACTION_ANGLE}
-AUTO_DISTANCE = ${params.AUTO_DISTANCE}
+HAMMER_SPEED = ${params.HAMMER_SPEED}
+HAMMER_ANGLE = ${params.HAMMER_ANGLE}
 
-# --- State ---
-mode = 1 # 1: Conducción, 2: Combate, 3: Automático
-MODES_COUNT = 3
-COLORS = [Color.GREEN, Color.ORANGE, Color.MAGENTA]
+rc = Remote()
+pressed = rc.buttons.pressed()
+was_pressed = pressed
+
+def new_press(button):
+    return (button in pressed) and not (button in was_pressed)
+
+# --- MODO 1: CONDUCCIÓN CON CONTROL DE VELOCIDAD (VERDE) ---
+def drive_mode():
+    speed = DRIVE_SPEED
+    steering = TURN_RATE
+    
+    # Si pulsas el botón central izquierdo, reduce velocidad al 30%
+    if Button.LEFT in pressed:
+        speed *= 0.3
+        steering *= 0.3
+
+    current_speed = 0
+    current_steering = 0
+    if Button.LEFT_PLUS in pressed: current_speed = speed
+    if Button.LEFT_MINUS in pressed: current_speed = -speed
+    if Button.RIGHT_PLUS in pressed: current_steering = steering
+    if Button.RIGHT_MINUS in pressed: current_steering = -steering
+    
+    drive_base.drive(current_speed, current_steering)
+
+# --- MODO 2: COMBATE MANUAL (NARANJA) ---
+def combat_mode():
+    current_speed = 0
+    current_steering = 0
+    if Button.LEFT_PLUS in pressed: current_speed = DRIVE_SPEED
+    if Button.LEFT_MINUS in pressed: current_speed = -DRIVE_SPEED
+    if Button.RIGHT_PLUS in pressed: current_steering = TURN_RATE
+    if Button.RIGHT_MINUS in pressed: current_steering = -TURN_RATE
+    drive_base.drive(current_speed, current_steering)
+    
+    # MARTILLAZO: Botón central derecho
+    if new_press(Button.RIGHT):
+        motor_pala.run_angle(HAMMER_SPEED, HAMMER_ANGLE) 
+        motor_pala.run_angle(HAMMER_SPEED, -HAMMER_ANGLE) 
+
+# --- MODO 3: CAZADOR AUTOMÁTICO (ROSA) ---
+def auto_mode():
+    current_speed = 0
+    current_steering = 0
+    if Button.LEFT_PLUS in pressed: current_speed = DRIVE_SPEED
+    if Button.LEFT_MINUS in pressed: current_speed = -DRIVE_SPEED
+    if Button.RIGHT_PLUS in pressed: current_steering = TURN_RATE
+    if Button.RIGHT_MINUS in pressed: current_steering = -TURN_RATE
+    drive_base.drive(current_speed, current_steering)
+
+    if distancia.distance() < ${params.AUTO_DISTANCE}:
+        distancia.lights.on(100)
+        motor_pala.run_angle(HAMMER_SPEED, HAMMER_ANGLE) 
+        motor_pala.run_angle(HAMMER_SPEED, -HAMMER_ANGLE)
+    else:
+        distancia.lights.off()
+
+# --- LÓGICA DE MODOS ---
+modes = (
+    (drive_mode, Color.GREEN),
+    (combat_mode, Color.ORANGE),
+    (auto_mode, Color.MAGENTA),
+)
+mode = 0 
 
 def set_mode(new_mode):
     global mode
-    mode = new_mode
-    hub.light.on(COLORS[mode-1])
-    print("Mode changed to:", mode)
+    mode = new_mode 
+    hub.light.on(modes[mode][1])
+    rc.light.on(modes[mode][1])
 
-set_mode(1)
+set_mode(mode)
 
-# --- Main Loop ---
+# --- BUCLE PRINCIPAL ---
 while True:
-    buttons = rc.buttons.pressed()
-    
-    # Mode Switching (Center Button)
-    if Button.CENTER in buttons:
-        new_mode = mode + 1
-        if new_mode > MODES_COUNT: new_mode = 1
-        set_mode(new_mode)
-        while Button.CENTER in rc.buttons.pressed(): wait(10) # Wait for release
+    was_pressed = pressed
+    pressed = rc.buttons.pressed()
 
-    # Movement Logic (Common)
-    drive = 0
-    turn = 0
-    if Button.LEFT_PLUS in buttons: drive = DRIVE_SPEED
-    elif Button.LEFT_MINUS in buttons: drive = -DRIVE_SPEED
-    if Button.RIGHT_PLUS in buttons: turn = TURN_RATE
-    elif Button.RIGHT_MINUS in buttons: turn = -TURN_RATE
-    
-    drive_base.drive(drive, turn)
+    if new_press(Button.CENTER):
+        set_mode((mode + 1) % len(modes))
 
-    # Special Logic per Mode
-    if mode == 2: # COMBATE
-        if Button.RIGHT in buttons:
-            motor_action.run_angle(ACTION_SPEED, ACTION_ANGLE)
-            motor_action.run_angle(ACTION_SPEED, -ACTION_ANGLE)
-            
-    elif mode == 3: # AUTOMÁTICO
-        if distance_sensor.distance() < AUTO_DISTANCE:
-            hub.display.pixel(2, 2, 100) # Sight indicator
-            motor_action.run_angle(ACTION_SPEED, ACTION_ANGLE)
-            motor_action.run_angle(ACTION_SPEED, -ACTION_ANGLE)
-        else:
-            hub.display.pixel(2, 2, 0)
-
-    wait(20)
+    modes[mode][0]()
+    wait(10)
 `.trim();
     };
 
     const handleCopy = () => {
         navigator.clipboard.writeText(generateScript());
-        // Using a subtle notification would be better, but keeping it simple as requested
-        alert("🚀 ¡Script Pybricks copiado al portapapeles!");
+        alert("🚀 ¡Script Maestro 2.0 copiado al portapapeles!");
     };
 
     return (

@@ -13,8 +13,8 @@ const LiveController: React.FC = () => {
     const [params] = useState<Parameters>({
         DRIVE_SPEED: 200,
         TURN_RATE: 150,
-        ACTION_SPEED: 1000,
-        ACTION_ANGLE: 90,
+        HAMMER_SPEED: 1000,
+        HAMMER_ANGLE: 90,
         AUTO_DISTANCE: 100,
     });
 

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./ParameterEditor.css";
 
 export interface Parameters {
     DRIVE_SPEED: number;
     TURN_RATE: number;
-    ACTION_SPEED: number;
-    ACTION_ANGLE: number;
+    HAMMER_SPEED: number;
+    HAMMER_ANGLE: number;
     AUTO_DISTANCE: number;
 }
 
@@ -17,8 +17,8 @@ interface ParameterEditorProps {
 const defaultParams: Parameters = {
     DRIVE_SPEED: 200,
     TURN_RATE: 150,
-    ACTION_SPEED: 1000,
-    ACTION_ANGLE: 90,
+    HAMMER_SPEED: 1000,
+    HAMMER_ANGLE: 90,
     AUTO_DISTANCE: 100,
 };
 
@@ -41,8 +41,8 @@ const ParameterEditor: React.FC<ParameterEditorProps> = ({ initialParams, onChan
         switch (param) {
             case "DRIVE_SPEED": return { tooltip: "Velocidad máxima de conducción", min: 0, max: 1000, step: 10 };
             case "TURN_RATE": return { tooltip: "Velocidad de giro (steering)", min: 0, max: 500, step: 5 };
-            case "ACTION_SPEED": return { tooltip: "Velocidad del motor de acción", min: 0, max: 2000, step: 50 };
-            case "ACTION_ANGLE": return { tooltip: "Ángulo de movimiento del motor", min: 0, max: 360, step: 5 };
+            case "HAMMER_SPEED": return { tooltip: "Velocidad del motor del martillo", min: 0, max: 2000, step: 50 };
+            case "HAMMER_ANGLE": return { tooltip: "Ángulo de golpe del martillo", min: 0, max: 360, step: 5 };
             case "AUTO_DISTANCE": return { tooltip: "Distancia de detección (mm)", min: 0, max: 1000, step: 10 };
             default: return { tooltip: "", min: 0, max: 100, step: 1 };
         }

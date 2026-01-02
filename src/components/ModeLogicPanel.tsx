@@ -30,6 +30,9 @@ export default function ModeLogicPanel({ mode, index }: Props) {
                     <div className="mapping-item"><span>Retroceder:</span> <b>LEFT –</b></div>
                     <div className="mapping-item"><span>Girar izquierda:</span> <b>RIGHT –</b></div>
                     <div className="mapping-item"><span>Girar derecha:</span> <b>RIGHT +</b></div>
+                    {index === 0 && (
+                        <div className="mapping-item special"><span>Reducir velocidad:</span> <b>Botón LEFT (30%)</b></div>
+                    )}
                 </div>
             </section>
 
@@ -37,10 +40,11 @@ export default function ModeLogicPanel({ mode, index }: Props) {
             {index === 1 && (
                 <section className="logic-section">
                     <h3 className="section-title">
-                        <span className="icon">🔨</span> Acción
+                        <span className="icon">🔨</span> Acción Manual
                     </h3>
-                    <div className="logic-block red">
-                        <p><b>Botón RIGHT (central):</b> golpe con motor de acción</p>
+                    <div className="logic-block orange">
+                        <p><b>Botón RIGHT (central derecho):</b></p>
+                        <p className="indent">Golpe con martillo (ida y vuelta)</p>
                     </div>
                 </section>
             )}
@@ -48,14 +52,16 @@ export default function ModeLogicPanel({ mode, index }: Props) {
             {index === 2 && (
                 <section className="logic-section">
                     <h3 className="section-title">
-                        <span className="icon">🤖</span> Acción automática
+                        <span className="icon">🤖</span> Acción Automática
                     </h3>
-                    <div className="logic-block blue">
-                        <p>Si el sensor detecta un objeto cerca:</p>
-                        <p className="indent"><b>Ejecuta acción del motor</b></p>
+                    <div className="logic-block magenta">
+                        <p>Si objeto a menos de <b>100mm</b>:</p>
+                        <p className="indent">1. Enciende luces sensor</p>
+                        <p className="indent">2. Ejecuta golpe de martillo</p>
                     </div>
                 </section>
             )}
+
         </div>
     );
 }
